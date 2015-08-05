@@ -16,7 +16,7 @@
             $scope.addCourse = function () {
                 $scope.newCourse.Price *= 1000;
                 CourseFactory.save($scope.newCourse, function () {
-                    $scope.courses = CourseFactory.query();
+                    updateCourses();
                 });
                 $scope.newCourse = {};
                 $("[ng-model='newCourse.Name']").focus();
@@ -57,7 +57,7 @@
             $scope.addCourseOrder = function () {
                 $scope.newCourseOrder.Price *= 1000;
                 CourseOrderFactory.save($scope.newCourseOrder, function () {
-                    $scope.courseOrders = CourseOrderFactory.query();
+                    updateCourseOrders();
                 });
                 $scope.newCourseOrder = {
                     Diners: []
