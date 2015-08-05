@@ -22,6 +22,7 @@ namespace LunchBox
 
             bundles.Add(new ScriptBundle("~/bundles/angularjs").Include(
                       "~/Scripts/angular.js",
+                      "~/Scripts/_site/angular-locale_vi-vn.js",
                       "~/Scripts/angular-resource.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

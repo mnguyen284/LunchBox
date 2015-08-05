@@ -16,9 +16,9 @@ namespace LunchBox.Migrations
         protected override void Seed(LunchBox.Models.LunchBoxContext context)
         {
             context.Courses.AddOrUpdate(m => m.Name,
-                new Course() { Id = 1, Date = DateTime.Today, Name = "Cá" },
-                new Course() { Id = 2, Date = DateTime.Today, Name = "Gà" },
-                new Course() { Id = 3, Date = DateTime.Today, Name = "Bò" }
+                new Course() { Id = 1, Date = DateTime.Today, Name = "Cá", Price = 25000 },
+                new Course() { Id = 2, Date = DateTime.Today, Name = "Gà", Price = 20000 },
+                new Course() { Id = 3, Date = DateTime.Today, Name = "Bò", Price = 22000 }
             );
         }
     }

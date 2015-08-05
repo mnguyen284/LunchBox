@@ -18,12 +18,14 @@
 
             $scope.addCourse = function () {
                 //$scope.courses.push($scope.newCourse);
+                $scope.newCourse.Price *= 1000;
                 CourseFactory.save($scope.newCourse, function () {
                     $scope.courses = CourseFactory.query();
                 });
                 $scope.newCourse = {
                     Diners: []
                 };
+                $("[ng-model='newCourse.Name']").focus();
             };
 
             $scope.removeCourse = function (course) {

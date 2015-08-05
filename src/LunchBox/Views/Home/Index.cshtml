@@ -4,46 +4,43 @@
 
 <div ng-app="lunchBoxApp" style="max-width: 800px; margin-left: auto; margin-right: auto;">
     <h1>Lunch Box</h1>
+    <div class="text-muted">@DateTime.Today.ToLongDateString()</div>
+    <hr style="visibility: hidden" />
     <form name="addCourseForm" ng-controller="OrderController" ng-submit="addCourseForm.$valid && addCourse()" novalidate>
+        <div>
+            <input style="max-width: 150px" type="text" name="userName" class="form-control" placeholder="Your name" ng-model="userName" ng-change="saveUserName()" />
+        </div>
         <table class="table">
             <thead>
                 <tr>
-                    <th style="width: 1px"></th>
+                    <th style="width: 1px">Order</th>
                     <th>Course</th>
-                    <th>Order</th>
+                    <th class="text-right">Price</th>
+                    <th class="text-right">Add-on</th>
                     <th>Diners</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="course in courses">
                     <td>
-                        <button type="button" class="btn btn-link" ng-click="removeCourse(course)"><span class="glyphicon glyphicon-minus-sign text-danger"></span></button>
-                    </td>
-                    <td>
-                        <p class="form-control-static">{{course.Name}}</p>
-                    </td>
-                    <td>
                         <button ng-show="canAddDiner(course)" type="button" class="btn btn-link" ng-click="addDiner(course)"><span class="glyphicon glyphicon-check text-success"></span></button>
                         <button ng-show="canRemoveDiner(course)" type="button" class="btn btn-link" ng-click="removeDiner(course)"><span class="glyphicon glyphicon-remove-circle text-danger"></span></button>
                     </td>
                     <td>
-                        <ul ng-show="course.Diners.length > 0" class="list-unstyled">
+                        <p class="form-control-static">{{course.Name}}</p>
+                    </td>
+                    <td class="text-right">
+                        <p class="form-control-static">{{course.Price | currency}}</p>
+                    </td>
+                    <td class="text-right">
+                        <p class="form-control-static">{{course.Price - 7000 | currency}}</p>
+                    </td>
+                    <td>
+                        <ul ng-show="course.Diners.length > 0" class="form-control-static list-unstyled">
                             <li ng-repeat="diner in course.Diners">
                                 {{diner}}
                             </li>
                         </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-plus-sign text-primary"></span></button>
-                    </td>
-                    <td>
-                        <input type="text" name="course" class="form-control" placeholder="New course" ng-model="newCourse.Name" required />
-                    </td>
-                    <td></td>
-                    <td>
-                        <input style="max-width: 150px" type="text" name="userName" class="form-control" placeholder="Your name" ng-model="userName" ng-change="saveUserName()" />
                     </td>
                 </tr>
             </tbody>

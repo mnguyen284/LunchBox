@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Lunch Box";
+}
+
+<div ng-app="lunchBoxApp" style="max-width: 800px; margin-left: auto; margin-right: auto;">
+    <h1>Lunch Box</h1>
+    <div class="text-muted">@DateTime.Today.ToLongDateString()</div>
+    <hr style="visibility: hidden" />
+    <form name="addCourseForm" ng-controller="OrderController" ng-submit="addCourseForm.$valid && addCourse()" novalidate>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 1px"></th>
+                    <th>Course</th>
+                    <th class="text-right">Price</th>
+                    <th class="text-right">Add-on</th>
+                    <th>Diners</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="course in courses">
+                    <td>
+                        <button type="button" class="btn btn-link" ng-click="removeCourse(course)"><span class="glyphicon glyphicon-minus-sign text-danger"></span></button>
+                    </td>
+                    <td>
+                        <p class="form-control-static">{{course.Name}}</p>
+                    </td>
+                    <td class="text-right">
+                        <p class="form-control-static">{{course.Price | currency}}</p>
+                    </td>
+                    <td class="text-right">
+                        <p class="form-control-static">{{course.Price - 7000 | currency}}</p>
+                    </td>
+                    <td>
+                        <ul ng-show="course.Diners.length > 0" class="list-unstyled">
+                            <li ng-repeat="diner in course.Diners">
+                                {{diner}}
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-plus-sign text-primary"></span></button>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" placeholder="New course" ng-model="newCourse.Name" required />
+                    </td>
+                    <td style="width: 150px; position: relative;">
+                        <span style="position: absolute; right: 18px; margin-top: 7px;">.00{{0 | currency}}</span><input style="text-align: right; padding-right: 48px;" type="text" class="form-control" ng-model="newCourse.Price" required />
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/_site/app.js"></script>
+}

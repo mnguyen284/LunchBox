@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LunchBox.Models
 {
-    public class Course
+    // Entity
+    public partial class Course
     {
         public int Id { get; set; }
 
@@ -11,8 +12,14 @@ namespace LunchBox.Models
 
         public string Name { get; set; }
 
-        public string AllDiners { get; set; }
+        public double Price { get; set; }
 
+        public string AllDiners { get; set; }
+    }
+
+    // Calculations
+    public partial class Course
+    {
         [NotMapped]
         public string[] Diners
         {
