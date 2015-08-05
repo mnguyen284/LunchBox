@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="lunchBoxApp">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -26,7 +26,10 @@
             </div>
         </div>
     </div>*@
-    <div class="container body-content">
+    <div class="container body-content" style="max-width: 800px; margin-left: auto; margin-right: auto;">
+        <h1>@Html.ActionLink("Lunch Box", "Index", "Home")</h1>
+        <div class="text-muted">@DateTime.Today.ToLongDateString()</div>
+        <hr style="visibility: hidden" />
         @RenderBody()
         @*<hr />
         <footer>

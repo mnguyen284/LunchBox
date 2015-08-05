@@ -8,52 +8,110 @@
 
     var controllers = angular.module("lunchBoxControllers", []);
 
-    controllers.controller("OrderController", ["$scope", "CourseFactory",
-        function ($scope, CourseFactory) {
-            $scope.newCourse = {
-                Diners: []
-            };
+    controllers.controller("CourseController", ["$scope", "CourseFactory", "CopyCourseService",
+        function ($scope, CourseFactory, CopyCourseService) {
+            $scope.newCourse = {};
             $scope.courses = CourseFactory.query();
-            $scope.userName = getCookie("userName");
 
             $scope.addCourse = function () {
-                //$scope.courses.push($scope.newCourse);
                 $scope.newCourse.Price *= 1000;
                 CourseFactory.save($scope.newCourse, function () {
                     $scope.courses = CourseFactory.query();
                 });
-                $scope.newCourse = {
-                    Diners: []
-                };
+                $scope.newCourse = {};
                 $("[ng-model='newCourse.Name']").focus();
             };
 
             $scope.removeCourse = function (course) {
-                //$scope.courses.splice($scope.courses.indexOf(course), 1);
                 course.$delete(null, function () {
                     updateCourses();
                 });
             };
 
-            $scope.canAddDiner = function (course) {
-                return $scope.userName && $scope.userName.trim().length > 0 && course.Diners.indexOf($scope.userName) < 0;
+            $scope.canCopyCourseToToday = function (course) {
+                return CopyCourseService.canCopyCourse(course);
             };
 
-            $scope.canRemoveDiner = function (course) {
-                return $scope.userName && $scope.userName.trim().length > 0 && course.Diners.indexOf($scope.userName) >= 0;
+            $scope.copyCourseToToday = function (course) {
+                CopyCourseService.copyCourse(course);
             };
 
-            $scope.addDiner = function (course) {
-                course.Diners.push($scope.userName);
-                course.$save(null, function () {
-                    updateCourses();
+            function updateCourses() {
+                CourseFactory.query(null, function (data) {
+                    $scope.courses = data;
+                });
+            }
+        }
+    ]);
+
+    controllers.controller("OrderController", ["$scope", "CourseOrderFactory", "CopyCourseService",
+        function ($scope, CourseOrderFactory, CopyCourseService) {
+            $scope.newCourseOrder = {
+                Diners: []
+            };
+            $scope.courseOrders = CourseOrderFactory.query();
+            $scope.userName = getCookie("userName");
+
+            CopyCourseService.init($scope);
+
+            $scope.addCourseOrder = function () {
+                $scope.newCourseOrder.Price *= 1000;
+                CourseOrderFactory.save($scope.newCourseOrder, function () {
+                    $scope.courseOrders = CourseOrderFactory.query();
+                });
+                $scope.newCourseOrder = {
+                    Diners: []
+                };
+                $("[ng-model='newCourseOrder.Name']").focus();
+            };
+
+            $scope.canAddFromCourse = function (course) {
+                var found = false;
+                $.each($scope.courseOrders, function (index, item) {
+                    if (item.Name === course.Name) {
+                        found = true;
+                        return false;
+                    }
+                });
+                return !found;
+            };
+
+            $scope.addFromCourse = function (course) {
+                var courseOrder = {
+                    Name: course.Name,
+                    Price: course.Price,
+                    Diners: []
+                };
+                CourseOrderFactory.save(courseOrder, function () {
+                    updateCourseOrders();
                 });
             };
 
-            $scope.removeDiner = function (course) {
-                course.Diners.splice(course.Diners.indexOf($scope.userName), 1);
-                course.$save(null, function () {
-                    updateCourses();
+            $scope.removeCourseOrder = function (courseOrder) {
+                courseOrder.$delete(null, function () {
+                    updateCourseOrders();
+                });
+            };
+
+            $scope.canAddDiner = function (courseOrder) {
+                return $scope.userName && $scope.userName.trim().length > 0 && courseOrder.Diners.indexOf($scope.userName) < 0;
+            };
+
+            $scope.canRemoveDiner = function (courseOrder) {
+                return $scope.userName && $scope.userName.trim().length > 0 && courseOrder.Diners.indexOf($scope.userName) >= 0;
+            };
+
+            $scope.addDiner = function (courseOrder) {
+                courseOrder.Diners.push($scope.userName);
+                courseOrder.$save(null, function () {
+                    updateCourseOrders();
+                });
+            };
+
+            $scope.removeDiner = function (courseOrder) {
+                courseOrder.Diners.splice(courseOrder.Diners.indexOf($scope.userName), 1);
+                courseOrder.$save(null, function () {
+                    updateCourseOrders();
                 });
             };
 
@@ -61,9 +119,9 @@
                 setCookie("userName", $scope.userName, 365);
             };
 
-            function updateCourses() {
-                CourseFactory.query(null, function (data) {
-                    $scope.courses = data;
+            function updateCourseOrders() {
+                CourseOrderFactory.query(null, function (data) {
+                    $scope.courseOrders = data;
                 });
             }
         }
@@ -124,5 +182,27 @@
           return $resource("api/Courses/:courseId", { courseId: "@Id" });
       }
     ]);
+
+    services.factory("CourseOrderFactory", ["Resource",
+      function ($resource) {
+          return $resource("api/CourseOrders/:courseOrderId", { courseOrderId: "@Id" });
+      }
+    ]);
+
+    services.service("CopyCourseService", function () {
+        return {
+            init: function (orderController) {
+                this.orderController = orderController;
+            },
+
+            canCopyCourse: function (course) {
+                return this.orderController.canAddFromCourse(course);
+            },
+
+            copyCourse: function (course) {
+                this.orderController.addFromCourse(course);
+            }
+        };
+    });
 
 })();

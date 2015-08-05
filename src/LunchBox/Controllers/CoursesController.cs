@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -20,7 +18,7 @@ namespace LunchBox.Controllers
         // GET: api/Courses
         public IQueryable<Course> GetCourses()
         {
-            return db.Courses.Where(m => m.Date == DateTime.Today);
+            return db.Courses;
         }
 
         // GET: api/Courses/5
@@ -80,7 +78,6 @@ namespace LunchBox.Controllers
                 return BadRequest(ModelState);
             }
 
-            course.Date = DateTime.Today;
             db.Courses.Add(course);
             await db.SaveChangesAsync();
 

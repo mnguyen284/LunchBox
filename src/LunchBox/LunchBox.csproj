@@ -164,6 +164,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\CourseOrdersController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -182,8 +183,17 @@
     <Compile Include="Migrations\201508050847396_Price.Designer.cs">
       <DependentUpon>201508050847396_Price.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201508051555110_CourseOrder.cs" />
+    <Compile Include="Migrations\201508051555110_CourseOrder.Designer.cs">
+      <DependentUpon>201508051555110_CourseOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508051610578_ModifyCourse.cs" />
+    <Compile Include="Migrations\201508051610578_ModifyCourse.Designer.cs">
+      <DependentUpon>201508051610578_ModifyCourse.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\CourseOrder.cs" />
     <Compile Include="Models\LunchBoxContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -222,6 +232,7 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
+    <None Include="Properties\PublishProfiles\lunchbox - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\lunchbox - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -995,7 +1006,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
@@ -1007,6 +1020,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508050847396_Price.resx">
       <DependentUpon>201508050847396_Price.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508051555110_CourseOrder.resx">
+      <DependentUpon>201508051555110_CourseOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508051610578_ModifyCourse.resx">
+      <DependentUpon>201508051610578_ModifyCourse.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

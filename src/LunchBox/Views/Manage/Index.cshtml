@@ -2,19 +2,70 @@
     ViewBag.Title = "Lunch Box";
 }
 
-<div ng-app="lunchBoxApp" style="max-width: 800px; margin-left: auto; margin-right: auto;">
-    <h1>Lunch Box</h1>
-    <div class="text-muted">@DateTime.Today.ToLongDateString()</div>
-    <hr style="visibility: hidden" />
-    <form name="addCourseForm" ng-controller="OrderController" ng-submit="addCourseForm.$valid && addCourse()" novalidate>
-        <table class="table">
+<div ng-controller="OrderController">
+    <form name="addCourseOrderForm" ng-submit="addCourseOrderForm.$valid && addCourseOrder()" novalidate>
+        <table class="table" style="width: auto">
             <thead>
                 <tr>
                     <th style="width: 1px"></th>
                     <th>Course</th>
                     <th class="text-right">Price</th>
-                    <th class="text-right">Add-on</th>
-                    <th>Diners</th>
+                    <th style="width: 100px" class="text-right">Add-on</th>
+                    <th style="width: 200px">Diners</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="courseOrder in courseOrders">
+                    <td>
+                        <button type="button" class="btn btn-link" ng-click="removeCourseOrder(courseOrder)"><span class="glyphicon glyphicon-minus-sign text-danger"></span></button>
+                    </td>
+                    <td>
+                        <p class="form-control-static">{{courseOrder.Name}}</p>
+                    </td>
+                    <td class="text-right">
+                        <p class="form-control-static">{{courseOrder.Price | currency}}</p>
+                    </td>
+                    <td class="text-right">
+                        <p class="form-control-static">{{courseOrder.Price - 7000 | currency}}</p>
+                    </td>
+                    <td>
+                        <ul ng-show="courseOrder.Diners.length > 0" class="form-control-static list-unstyled">
+                            <li ng-repeat="diner in courseOrder.Diners">
+                                {{diner}}
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-plus-sign text-primary"></span></button>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" placeholder="New course" ng-model="newCourseOrder.Name" required />
+                    </td>
+                    <td style="width: 150px; position: relative;">
+                        <span class="text-muted" style="position: absolute; right: 18px; margin-top: 7px;">.00{{0 | currency}}</span><input style="text-align: right; padding-right: 48px;" type="text" class="form-control" ng-model="newCourseOrder.Price" required />
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<hr style="visibility: hidden" />
+<h3>Predefined Courses</h3>
+<div ng-controller="CourseController">
+    <form name="addCourseForm" ng-submit="addCourseForm.$valid && addCourse()" novalidate>
+        <table class="table" style="width: auto">
+            <thead>
+                <tr>
+                    <th style="width: 1px"></th>
+                    <th>Course</th>
+                    <th class="text-right">Price</th>
+                    <th style="width: 100px" class="text-right">Add-on</th>
+                    <th style="width: 1px">Today</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,11 +83,7 @@
                         <p class="form-control-static">{{course.Price - 7000 | currency}}</p>
                     </td>
                     <td>
-                        <ul ng-show="course.Diners.length > 0" class="list-unstyled">
-                            <li ng-repeat="diner in course.Diners">
-                                {{diner}}
-                            </li>
-                        </ul>
+                        <button ng-show="canCopyCourseToToday(course)" type="button" class="btn btn-link" ng-click="copyCourseToToday(course)"><span class="glyphicon glyphicon-circle-arrow-up text-success"></span></button>
                     </td>
                 </tr>
                 <tr>
@@ -47,7 +94,7 @@
                         <input type="text" class="form-control" placeholder="New course" ng-model="newCourse.Name" required />
                     </td>
                     <td style="width: 150px; position: relative;">
-                        <span style="position: absolute; right: 18px; margin-top: 7px;">.00{{0 | currency}}</span><input style="text-align: right; padding-right: 48px;" type="text" class="form-control" ng-model="newCourse.Price" required />
+                        <span class="text-muted" style="position: absolute; right: 18px; margin-top: 7px;">.00{{0 | currency}}</span><input style="text-align: right; padding-right: 48px;" type="text" class="form-control" ng-model="newCourse.Price" required />
                     </td>
                     <td></td>
                     <td></td>
