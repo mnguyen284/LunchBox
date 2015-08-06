@@ -30,7 +30,7 @@ namespace LunchBox.Models
                     return new string[] { };
                 }
 
-                return AllDiners.Split('\n');
+                return AllDiners.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             }
             set
             {
